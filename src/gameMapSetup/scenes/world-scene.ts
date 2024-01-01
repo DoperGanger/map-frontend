@@ -90,7 +90,16 @@ export class WorldScene extends Phaser.Scene {
       //MOVE NPC
       this.npc.moveCharacter(npcMove);
     }
+
     this.player.update(time);
     this.npc.update(time);
+
+    if (
+      this.player.getPosition().x === this.npc.getPosition().x &&
+      this.player.getPosition().y === this.npc.getPosition().y
+    ) {
+      console.log("Player and NPC are on the same tile!");
+      //START GAME
+    }
   }
 }

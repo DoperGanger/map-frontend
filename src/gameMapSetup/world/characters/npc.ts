@@ -44,24 +44,4 @@ export class NPC extends Character {
         exhaustiveGuard(this._direction);
     }
   }
-
-  //   playerMoved(playerDirection: DIRECTION): void {
-  //     this._lastPlayerDirection = playerDirection;
-  //     // Optionally, add logic to decide whether the NPC should move immediately
-  //     // in response to the player's movement, or under certain conditions.
-  //   }
-
-  //   moveCharacter(): void {
-  //     if (this._lastPlayerDirection === DIRECTION.NONE) {
-  //       // If the player hasn't moved, the NPC shouldn't move either.
-  //       return;
-  //     }
-
-  //     super.moveCharacter(this._lastPlayerDirection);
-
-  //     // After moving, reset the last player direction.
-  //     this._lastPlayerDirection = DIRECTION.NONE;
-
-  //     // NPC-specific animation or additional logic here.
-  //   }
 }

@@ -162,4 +162,11 @@ export class Character {
     }
     return tile.index !== -1;
   }
+
+  getPosition() {
+    return {
+      x: this._phaserGameObject.x,
+      y: this._phaserGameObject.y,
+    };
+  }
 }
