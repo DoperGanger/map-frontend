@@ -7,6 +7,7 @@ import { TILE_SIZE, TILED_COLLISION_LAYER_ALPHA } from "../world/config";
 import { Controls } from "../utils/controls";
 import { DIRECTION } from "../common/direction";
 import { NPC } from "../world/characters/npc";
+import { publishPhaserEvent } from "../events/gameEventCenter";
 
 const PLAYER_POSITION = Object.freeze({ x: 0 * TILE_SIZE, y: 0 * TILE_SIZE });
 const NPC_POSITION = Object.freeze({ x: 1 * TILE_SIZE, y: 0 * TILE_SIZE });
@@ -82,9 +83,12 @@ export class WorldScene extends Phaser.Scene {
 
   update(time: any) {
     const selectedDirection = this.controls.getDirectionKeyJustPressed();
+
     const npcMove = DIRECTION.RIGHT; //GET FROM CONTRACT.
 
     if (selectedDirection !== DIRECTION.NONE) {
+      publishPhaserEvent("move", selectedDirection);
+
       this.player.moveCharacter(selectedDirection);
 
       //MOVE NPC
@@ -99,7 +103,19 @@ export class WorldScene extends Phaser.Scene {
       this.player.getPosition().y === this.npc.getPosition().y
     ) {
       console.log("Player and NPC are on the same tile!");
+      return;
       //START GAME
     }
+
+    // console.log(this.player.getIndex());
+
+    // const playerIndex = this.player.getIndex();
+    // // if (playerIndex === 199 || playerIndex === 219 || playerIndex === 239) {
+    // if (playerIndex === 3 || playerIndex === 219 || playerIndex === 239) {
+    //   console.log("Travel");
+    //   this.game.events.emit("open-modal");
+
+    //   return;
+    // }
   }
 }

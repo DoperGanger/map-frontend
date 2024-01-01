@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Phaser from "phaser";
 import { PreloadScene } from "@/gameMapSetup/scenes/preload-scene";
 import { WorldScene } from "@/gameMapSetup/scenes/world-scene";

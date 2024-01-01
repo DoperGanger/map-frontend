@@ -1,4 +1,5 @@
 import { DIRECTION } from "@/gameMapSetup/common/direction";
+import eventsCenter from "@/gameMapSetup/events/gameEventCenter";
 import { getTargetPositionFromGameObjectPositionAndDirection } from "@/gameMapSetup/utils/grid-utils";
 import { exhaustiveGuard } from "@/gameMapSetup/utils/guard";
 
@@ -59,9 +60,13 @@ export class Character {
     if (this._isMoving) {
       return;
     }
+
     const idleFrame =
       this._phaserGameObject.anims.currentAnim?.frames[1].frame.name;
+
     this.moveSprite(direction);
+    //check npc caught
+
     if (!idleFrame) {
       return;
     }
@@ -74,7 +79,9 @@ export class Character {
     // stop current animation and show idle frame
     const idleFrame =
       this._phaserGameObject.anims.currentAnim?.frames[1].frame.name;
+
     this._phaserGameObject.anims.stop();
+
     if (!idleFrame) {
       return;
     }
@@ -94,6 +101,8 @@ export class Character {
   }
 
   protected moveSprite(direction: DIRECTION): void {
+    //call contract to move sprite on chain
+    //call event
     this._direction = direction;
     if (this.isBlockingTile()) {
       return;
@@ -126,7 +135,9 @@ export class Character {
       this._targetPosition,
       this._direction
     );
+
     this._previousTargetPosition = { ...this._targetPosition };
+
     this._targetPosition = updatedPosition;
 
     this._scene.add.tween({
@@ -135,11 +146,22 @@ export class Character {
       y: { from: this._phaserGameObject.y, to: updatedPosition.y },
       x: { from: this._phaserGameObject.x, to: updatedPosition.x },
       targets: this._phaserGameObject,
+
       onComplete: () => {
         this._isMoving = false;
         if (this._spriteGridMovementFinishedCallback) {
           this._spriteGridMovementFinishedCallback();
         }
+        // console.log(this.getIndex());
+
+        // // check exit
+        // const playerIndex = this.getIndex();
+        // // if (playerIndex === 199 || playerIndex === 219 || playerIndex === 239) {
+        // if (playerIndex === 3 || playerIndex === 219 || playerIndex === 239) {
+        //   console.log("Travel");
+        //   eventsCenter.emit("open-modal", "travel");
+        //   // return;
+        // }
       },
     });
   }
@@ -150,12 +172,8 @@ export class Character {
     }
 
     const { x, y } = position;
-    console.log(x, y);
 
-    console.log(x / 16 + (y / 16) * 20);
-    const tileIndex = x / 16 + (y / 16) * 20;
     const tile = this._collisionLayer.getTileAtWorldXY(x, y, true);
-    // console.log(tile.index);
 
     if (x < 0 || y < 0 || x >= 320 || y >= 320) {
       return true;
@@ -168,5 +186,10 @@ export class Character {
       x: this._phaserGameObject.x,
       y: this._phaserGameObject.y,
     };
+  }
+  getIndex() {
+    const x = this._phaserGameObject.x;
+    const y = this._phaserGameObject.y;
+    return x / 16 + (y / 16) * 20;
   }
 }
