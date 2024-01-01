@@ -2,6 +2,10 @@ import React, { useEffect, useRef, useState } from "react";
 import Phaser from "phaser";
 import { PreloadScene } from "@/gameMapSetup/scenes/preload-scene";
 import { WorldScene } from "@/gameMapSetup/scenes/world-scene";
+import {
+  subscribePhaserEvent,
+  unsubscribePhaserEvent,
+} from "@/gameMapSetup/events/gameEventCenter";
 
 const GameMap: React.FC = () => {
   const gameRef = useRef<HTMLDivElement>(null);
@@ -23,8 +27,21 @@ const GameMap: React.FC = () => {
 
     const game = new Phaser.Game(gameConfig);
 
+    const handleCustomEvent = (event: any) => {
+      console.log("Received data:", event.detail);
+    };
+
+    const travelLocation = (event: any) => {
+      console.log("Received data:", event.detail);
+    };
+
+    subscribePhaserEvent("move", handleCustomEvent);
+    subscribePhaserEvent("travel", travelLocation);
+
     return () => {
       game.destroy(true);
+      unsubscribePhaserEvent("move", handleCustomEvent);
+      unsubscribePhaserEvent("travel", travelLocation);
     };
   }, []);
 

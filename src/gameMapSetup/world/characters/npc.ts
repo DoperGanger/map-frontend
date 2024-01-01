@@ -23,22 +23,22 @@ export class NPC {
     this._targetPosition = { ...config.position };
     this._previousTargetPosition = { ...config.position };
     this._idleFrameConfig = {
-      DOWN: 80,
-      LEFT: 83,
+      DOWN: 80, //80,
+      LEFT: 82,
       UP: 81,
-      RIGHT: 4,
-      NONE: 7,
+      RIGHT: 82,
+      NONE: 80,
     };
     this._spriteGridMovementFinishedCallback =
       config.spriteGridMovementFinishedCallback;
-    this._origin = config.origin ? { ...config.origin } : { x: -0.1, y: -0.1 };
+    this._origin = { x: -0.1, y: -0.1 };
     this._collisionLayer = config.collisionLayer;
 
     this._phaserGameObject = this._scene.add
       .sprite(
         config.position.x,
         config.position.y,
-        config.assetKey || CHARACTER_ASSET_KEYS.NPC,
+        CHARACTER_ASSET_KEYS.NPC,
         this._getIdleFrame()
       )
       .setOrigin(this._origin.x, this._origin.y)
@@ -49,33 +49,64 @@ export class NPC {
     if (this._isMoving) {
       return;
     }
-    const idleFrame =
-      this._phaserGameObject.anims.currentAnim?.frames[1].frame.name;
-    this.moveSprite(direction);
-    if (!idleFrame) {
-      return;
+
+    this._phaserGameObject.setScale(1, 1);
+    if (direction === DIRECTION.LEFT) {
+      this._phaserGameObject.setScale(-1, 1);
+      this._phaserGameObject.setOrigin(1.1, -0.1);
     }
+
+    this.moveSprite(direction);
+
+    // if (!idleFrame) {
+    //   return;
+    // }
+
+    this._direction = direction;
+    let animKey;
 
     switch (this._direction) {
       case DIRECTION.DOWN:
-      case DIRECTION.LEFT:
-      case DIRECTION.RIGHT:
-      case DIRECTION.UP:
-        if (
-          !this._phaserGameObject.anims.isPlaying ||
-          this._phaserGameObject.anims.currentAnim?.key !==
-            `NPC_${this._direction}`
-        ) {
-          this._phaserGameObject.play(`NPC_${this._direction}`);
-        }
+        animKey = "NPC_DOWN";
         break;
+      case DIRECTION.UP:
+        animKey = "NPC_UP";
+        break;
+      case DIRECTION.LEFT:
+        animKey = "NPC_LEFT";
+        break;
+      case DIRECTION.RIGHT:
+        animKey = "NPC_RIGHT";
+        break;
+      // if (
+      //   !this._phaserGameObject.anims.isPlaying ||
+      //   this._phaserGameObject.anims.currentAnim?.key !==
+      //     `NPC_${this._direction}`
+      // ) {
+      //   console.log("NPC is moving");
+      //   this._phaserGameObject.anims.play(`NPC_${this._direction}`);
+      // }
+      // break;
       case DIRECTION.NONE:
         break;
       default:
         // We should never reach this default case
         exhaustiveGuard(this._direction);
     }
+
+    if (animKey) {
+      this._phaserGameObject.anims.play(animKey, true);
+    }
   }
+
+  stopMovement() {
+    this._isMoving = false;
+
+    // Play idle animation based on last direction
+    let idleAnimKey = `NPC_${DIRECTION[this._direction]}`; // e.g., "NPC_IDLE_DOWN"
+    this._phaserGameObject.anims.play(idleAnimKey, true);
+  }
+
   _getIdleFrame() {
     return this._idleFrameConfig[this._direction];
   }
@@ -99,10 +130,13 @@ export class NPC {
     // stop current animation and show idle frame
     const idleFrame =
       this._phaserGameObject.anims.currentAnim?.frames[1].frame.name;
+
     this._phaserGameObject.anims.stop();
+
     if (!idleFrame) {
       return;
     }
+
     switch (this._direction) {
       case DIRECTION.DOWN:
       case DIRECTION.LEFT:
@@ -151,7 +185,9 @@ export class NPC {
       this._targetPosition,
       this._direction
     );
+
     this._previousTargetPosition = { ...this._targetPosition };
+
     this._targetPosition = updatedPosition;
 
     this._scene.add.tween({
@@ -160,8 +196,10 @@ export class NPC {
       y: { from: this._phaserGameObject.y, to: updatedPosition.y },
       x: { from: this._phaserGameObject.x, to: updatedPosition.x },
       targets: this._phaserGameObject,
+
       onComplete: () => {
         this._isMoving = false;
+        this.stopMovement();
         if (this._spriteGridMovementFinishedCallback) {
           this._spriteGridMovementFinishedCallback();
         }
@@ -176,7 +214,6 @@ export class NPC {
 
     const { x, y } = position;
 
-    // console.log(x / 16 + (y / 16) * 20);
     const tileIndex = x / 16 + (y / 16) * 20;
     const tile = this._collisionLayer.getTileAtWorldXY(x, y, true);
 

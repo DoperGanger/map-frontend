@@ -87,21 +87,19 @@ export class WorldScene extends Phaser.Scene {
     const npcMove = DIRECTION.RIGHT; //GET FROM CONTRACT.
 
     if (selectedDirection !== DIRECTION.NONE) {
-      publishPhaserEvent("move", selectedDirection);
-
       this.player.moveCharacter(selectedDirection);
 
       //MOVE NPC
-      this.npc.moveCharacter(npcMove);
-    }
+      this.npc.moveCharacter("RIGHT");
 
+      if (typeof window !== "undefined") {
+        publishPhaserEvent("move", selectedDirection);
+      }
+    }
     this.player.update(time);
     this.npc.update(time);
 
-    if (
-      this.player.getPosition().x === this.npc.getPosition().x &&
-      this.player.getPosition().y === this.npc.getPosition().y
-    ) {
+    if (this.player.getIndex() === this.npc.getIndex()) {
       console.log("Player and NPC are on the same tile!");
       return;
       //START GAME

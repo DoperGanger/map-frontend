@@ -71,6 +71,7 @@ export class PreloadScene extends Phaser.Scene {
             frames: animation.frames,
           })
         : this.anims.generateFrameNumbers(animation.assetKey, {}); // Provide an empty object as the second argument
+
       this.anims.create({
         key: animation.key,
         frames: frames,

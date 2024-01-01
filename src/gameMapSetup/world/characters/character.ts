@@ -1,5 +1,7 @@
 import { DIRECTION } from "@/gameMapSetup/common/direction";
-import eventsCenter from "@/gameMapSetup/events/gameEventCenter";
+import eventsCenter, {
+  publishPhaserEvent,
+} from "@/gameMapSetup/events/gameEventCenter";
 import { getTargetPositionFromGameObjectPositionAndDirection } from "@/gameMapSetup/utils/grid-utils";
 import { exhaustiveGuard } from "@/gameMapSetup/utils/guard";
 
@@ -148,20 +150,47 @@ export class Character {
       targets: this._phaserGameObject,
 
       onComplete: () => {
-        this._isMoving = false;
         if (this._spriteGridMovementFinishedCallback) {
           this._spriteGridMovementFinishedCallback();
         }
         // console.log(this.getIndex());
 
-        // // check exit
-        // const playerIndex = this.getIndex();
-        // // if (playerIndex === 199 || playerIndex === 219 || playerIndex === 239) {
-        // if (playerIndex === 3 || playerIndex === 219 || playerIndex === 239) {
-        //   console.log("Travel");
-        //   eventsCenter.emit("open-modal", "travel");
-        //   // return;
-        // }
+        // check exit
+        const playerIndex = this.getIndex();
+
+        if (playerIndex === 3 || playerIndex === 4 || playerIndex === 5) {
+          publishPhaserEvent("travel", "Coney Island");
+          // return;
+        } else if (
+          playerIndex === 13 ||
+          playerIndex === 14 ||
+          playerIndex === 15
+        ) {
+          publishPhaserEvent("travel", "JerseyCity");
+          // return;
+        } else if (
+          playerIndex === 199 ||
+          playerIndex === 219 ||
+          playerIndex === 239
+        ) {
+          publishPhaserEvent("travel", "Central Park");
+          // return;
+        } else if (
+          playerIndex === 385 ||
+          playerIndex === 384 ||
+          playerIndex === 383
+        ) {
+          publishPhaserEvent("travel", "Bronx");
+          // return;
+        } else if (
+          playerIndex === 395 ||
+          playerIndex === 394 ||
+          playerIndex === 393
+        ) {
+          publishPhaserEvent("travel", "Queens");
+        }
+
+        this._isMoving = false;
       },
     });
   }
