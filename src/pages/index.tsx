@@ -1,5 +1,4 @@
 import React from "react";
-
 import dynamic from "next/dynamic";
 
 // Dynamically import the PhaserGame component with SSR disabled

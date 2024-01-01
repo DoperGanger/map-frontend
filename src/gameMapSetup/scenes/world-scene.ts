@@ -6,11 +6,14 @@ import { Player } from "../world/characters/player";
 import { TILE_SIZE, TILED_COLLISION_LAYER_ALPHA } from "../world/config";
 import { Controls } from "../utils/controls";
 import { DIRECTION } from "../common/direction";
+import { NPC } from "../world/characters/npc";
 
 const PLAYER_POSITION = Object.freeze({ x: 0 * TILE_SIZE, y: 0 * TILE_SIZE });
+const NPC_POSITION = Object.freeze({ x: 1 * TILE_SIZE, y: 0 * TILE_SIZE });
 
 export class WorldScene extends Phaser.Scene {
   protected player: any;
+  protected npc: any;
   controls: any;
 
   constructor() {
@@ -23,7 +26,7 @@ export class WorldScene extends Phaser.Scene {
     const y = 22 * TILE_SIZE;
 
     this.cameras.main.setBounds(0, 0, 320, 320);
-    // this.cameras.main.setZoom(2);
+    this.cameras.main.setZoom(2);
     this.cameras.main.centerOn(x, y);
 
     const map = this.make.tilemap({ key: WORLD_ASSET_KEYS.WORLD_MAIN_LEVEL });
@@ -39,6 +42,7 @@ export class WorldScene extends Phaser.Scene {
       return;
     }
     const collisionLayer = map.createLayer("Collision", collisionTiles, 0, 0);
+
     if (!collisionLayer) {
       console.log(
         `[${WorldScene.name}:create] error while creating collision layer`
@@ -59,6 +63,14 @@ export class WorldScene extends Phaser.Scene {
       collisionLayer: collisionLayer,
     });
 
+    this.npc = new NPC({
+      scene: this,
+      position: NPC_POSITION,
+      scale: 0.9,
+      direction: DIRECTION.DOWN,
+      collisionLayer: collisionLayer,
+    });
+
     this.cameras.main.startFollow(this.player.sprite);
 
     this.add.image(0, 0, WORLD_ASSET_KEYS.WORLD_FOREGROUND, 0).setOrigin(0);
@@ -70,9 +82,15 @@ export class WorldScene extends Phaser.Scene {
 
   update(time: any) {
     const selectedDirection = this.controls.getDirectionKeyJustPressed();
+    const npcMove = DIRECTION.RIGHT; //GET FROM CONTRACT.
+
     if (selectedDirection !== DIRECTION.NONE) {
       this.player.moveCharacter(selectedDirection);
+
+      //MOVE NPC
+      this.npc.moveCharacter(npcMove);
     }
     this.player.update(time);
+    this.npc.update(time);
   }
 }
