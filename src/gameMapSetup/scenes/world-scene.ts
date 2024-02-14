@@ -9,8 +9,8 @@ import { DIRECTION } from "../common/direction";
 import { NPC } from "../world/characters/npc";
 import { publishPhaserEvent } from "../events/gameEventCenter";
 
-const PLAYER_POSITION = Object.freeze({ x: 0 * TILE_SIZE, y: 0 * TILE_SIZE });
-const NPC_POSITION = Object.freeze({ x: 1 * TILE_SIZE, y: 0 * TILE_SIZE });
+const PLAYER_POSITION = Object.freeze({ x: 1 * TILE_SIZE, y: 0 * TILE_SIZE });
+const NPC_POSITION = Object.freeze({ x: 2 * TILE_SIZE, y: 0 * TILE_SIZE });
 
 export class WorldScene extends Phaser.Scene {
   protected player: any;
@@ -26,16 +26,21 @@ export class WorldScene extends Phaser.Scene {
     const x = 6 * TILE_SIZE;
     const y = 22 * TILE_SIZE;
 
-    this.cameras.main.setBounds(0, 0, 320, 320);
-    this.cameras.main.setZoom(2);
-    this.cameras.main.centerOn(x, y);
+    this.cameras.main.setBounds(0, 0, 96, 96);
+    // this.cameras.main.setZoom(2);
+    // this.cameras.main.centerOn(x, y);
 
+    console.log(
+      "WORLD_ASSET_KEYS.WORLD_MAIN_LEVEL:::",
+      WORLD_ASSET_KEYS.WORLD_MAIN_LEVEL
+    );
     const map = this.make.tilemap({ key: WORLD_ASSET_KEYS.WORLD_MAIN_LEVEL });
 
     const collisionTiles = map.addTilesetImage(
       "collision",
       WORLD_ASSET_KEYS.WORLD_COLLISION
     );
+
     if (!collisionTiles) {
       console.log(
         `[${WorldScene.name}:create] error while creating collision tileset`
@@ -74,7 +79,7 @@ export class WorldScene extends Phaser.Scene {
 
     this.cameras.main.startFollow(this.player.sprite);
 
-    this.add.image(0, 0, WORLD_ASSET_KEYS.WORLD_FOREGROUND, 0).setOrigin(0);
+    // this.add.image(0, 0, WORLD_ASSET_KEYS.WORLD_FOREGROUND, 0).setOrigin(0);
 
     this.controls = new Controls(this);
 

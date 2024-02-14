@@ -16,8 +16,8 @@ const GameMap: React.FC = () => {
       pixelArt: false,
       scale: {
         parent: "game-container",
-        width: 320,
-        height: 320,
+        width: 96,
+        height: 96,
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,
       },

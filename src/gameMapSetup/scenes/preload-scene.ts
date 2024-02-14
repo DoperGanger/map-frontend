@@ -20,21 +20,20 @@ export class PreloadScene extends Phaser.Scene {
     //load world assets
     this.load.image(
       WORLD_ASSET_KEYS.WORLD_BACKGROUND,
-      "gameMap/images/doperganger_background.png"
+      "gameMap/images/map.png"
     );
     this.load.tilemapTiledJSON(
       WORLD_ASSET_KEYS.WORLD_MAIN_LEVEL,
-      `gameMap/data/fullmap.json`
+      `gameMap/data/alley.json`
     );
-
     this.load.image(
       WORLD_ASSET_KEYS.WORLD_COLLISION,
-      "gameMap/images/collision.png"
+      "gameMap/images/alley_collision.png"
     );
-    this.load.image(
-      WORLD_ASSET_KEYS.WORLD_FOREGROUND,
-      "gameMap/images/foreground.png"
-    );
+    // this.load.image(
+    //   WORLD_ASSET_KEYS.WORLD_FOREGROUND,
+    //   "gameMap/images/foreground.png"
+    // );
 
     //load json data
     this.load.json(DATA_ASSET_KEYS.ANIMATIONS, "gameMap/data/animation.json");

@@ -1,0 +1,76 @@
+{
+  "compressionlevel": -1,
+  "height": 6,
+  "infinite": false,
+  "layers": [
+    {
+      "data": [
+        90, 53, 53, 53, 53, 196, 117, 53, 53, 53, 53, 223, 423, 423, 423, 423,
+        423, 423, 450, 450, 450, 450, 450, 450, 477, 477, 477, 477, 477, 477,
+        53, 53, 53, 53, 53, 53
+      ],
+      "height": 6,
+      "id": 1,
+      "name": "Tile Layer 1",
+      "opacity": 1,
+      "type": "tilelayer",
+      "visible": true,
+      "width": 6,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "data": [
+        8, 0, 0, 0, 0, 8, 8, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+      ],
+      "height": 6,
+      "id": 2,
+      "name": "Collision",
+      "opacity": 1,
+      "type": "tilelayer",
+      "visible": false,
+      "width": 6,
+      "x": 0,
+      "y": 0
+    }
+  ],
+  "nextlayerid": 3,
+  "nextobjectid": 1,
+  "orientation": "orthogonal",
+  "renderorder": "right-down",
+  "tiledversion": "1.10.2",
+  "tileheight": 16,
+  "tilesets": [
+    {
+      "columns": 4,
+      "firstgid": 1,
+      "image": "collision.png",
+      "imageheight": 64,
+      "imagewidth": 64,
+      "margin": 0,
+      "name": "collision",
+      "spacing": 0,
+      "tilecount": 16,
+      "tileheight": 16,
+      "tilewidth": 16
+    },
+    {
+      "columns": 27,
+      "firstgid": 17,
+      "image": "../Documents/Dojo Jam/game-map/map-frontend/public/gameMap/images/tilemap_packed.png",
+      "imageheight": 288,
+      "imagewidth": 432,
+      "margin": 0,
+      "name": "tilemap_packed",
+      "spacing": 0,
+      "tilecount": 486,
+      "tileheight": 16,
+      "tilewidth": 16
+    }
+  ],
+  "tilewidth": 16,
+  "type": "map",
+  "version": "1.10",
+  "width": 6
+}

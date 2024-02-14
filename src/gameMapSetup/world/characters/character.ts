@@ -153,42 +153,6 @@ export class Character {
         if (this._spriteGridMovementFinishedCallback) {
           this._spriteGridMovementFinishedCallback();
         }
-        // console.log(this.getIndex());
-
-        // check exit
-        const playerIndex = this.getIndex();
-
-        if (playerIndex === 3 || playerIndex === 4 || playerIndex === 5) {
-          publishPhaserEvent("travel", "Coney Island");
-          // return;
-        } else if (
-          playerIndex === 13 ||
-          playerIndex === 14 ||
-          playerIndex === 15
-        ) {
-          publishPhaserEvent("travel", "JerseyCity");
-          // return;
-        } else if (
-          playerIndex === 199 ||
-          playerIndex === 219 ||
-          playerIndex === 239
-        ) {
-          publishPhaserEvent("travel", "Central Park");
-          // return;
-        } else if (
-          playerIndex === 385 ||
-          playerIndex === 384 ||
-          playerIndex === 383
-        ) {
-          publishPhaserEvent("travel", "Bronx");
-          // return;
-        } else if (
-          playerIndex === 395 ||
-          playerIndex === 394 ||
-          playerIndex === 393
-        ) {
-          publishPhaserEvent("travel", "Queens");
-        }
 
         this._isMoving = false;
       },
@@ -204,7 +168,7 @@ export class Character {
 
     const tile = this._collisionLayer.getTileAtWorldXY(x, y, true);
 
-    if (x < 0 || y < 0 || x >= 320 || y >= 320) {
+    if (x < 0 || y < 0 || x >= 96 || y >= 96) {
       return true;
     }
     return tile.index !== -1;
